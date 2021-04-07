@@ -1,0 +1,51 @@
+FROM elixir@sha256:7b265545e9f936257dfc725609b7d0fcb50dee6a23b4a1efbbde8c9227a9007a
+
+LABEL maintainer="amalbuquerque"
+
+ARG run_deps="inotify-tools pandoc curl"
+
+ARG mix_env="dev"
+ARG http_port="4000"
+ARG app_path="/home/service"
+ARG replace_os_vars="true"
+ARG hex_repo_key=""
+
+USER root
+
+ENV TERM xterm
+
+ENV HOME /home/app
+ENV APP_PATH ${app_path}
+ENV HTTP_PORT ${http_port}
+ENV MIX_ENV ${mix_env}
+ENV REPLACE_OS_VARS ${replace_os_vars}
+ENV ERL_AFLAGS="-kernel shell_history enabled"
+
+ENV REFRESHED_AT 2021-04-07
+
+RUN apt-get -q update && apt-get -qy --no-install-recommends install ${run_deps}
+
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash
+
+RUN apt-get -qy --no-install-recommends install nodejs
+
+RUN adduser --disabled-password --gecos '' app && chown -R app:app ${HOME}
+
+RUN mkdir -p /home/app/elixir-artifacts
+RUN chown -R app:app /home/app/elixir-artifacts
+
+USER app:app
+
+RUN /usr/local/bin/mix local.hex --force && \
+  /usr/local/bin/mix local.rebar --force && \
+  /usr/local/bin/mix hex.info
+
+RUN echo "PS1=\"\[$(tput setaf 3)$(tput bold)[\]\\u@\\h$:\\w]$ \"" >> /home/app/.bashrc
+
+COPY --chown=app:app . ${APP_PATH}
+
+WORKDIR ${APP_PATH}
+
+EXPOSE ${HTTP_PORT}
+
+CMD ["sh", "scripts/start.sh"]

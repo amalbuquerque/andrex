@@ -1,0 +1,20 @@
+version: "2.2"
+services:
+  andrex:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    # comment the following line if you want `docker-compose up` to start the phoenix server automatically
+    command: bash -c "sh ./scripts/development.sh"
+    ports:
+      - 4003:4000
+    env_file: ./env/dev.env
+    working_dir: /home/app/andrex
+    volumes:
+      - .:/home/app/andrex
+      - elixir-artifacts:/home/app/elixir-artifacts
+    networks:
+      - default
+
+volumes:
+  elixir-artifacts: {}
