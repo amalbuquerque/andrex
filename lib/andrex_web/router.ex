@@ -17,6 +17,8 @@ defmodule AndrexWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/blog", BlogController, :index
+    get "/blog/:year/:month/:day/:title", BlogController, :entry
   end
 
   # Other scopes may use custom stacks.
