@@ -1,6 +1,7 @@
 defmodule Andrex.Blog do
   require Logger
   alias Andrex.Utils, as: U
+  alias Andrex.Blog.Pandoc
 
   @app :andrex
   @priv_posts_path 'markdown'
@@ -14,10 +15,12 @@ defmodule Andrex.Blog do
 
       all_posts
       |> Enum.find_value(fn
-        {title, content} when title == post_title ->
-          {:ok, content}
+        {title, pandoc} when title == post_title ->
+          Logger.debug("While trying to find #{post_title}, found #{inspect(pandoc)}")
 
-        {_title, _content} ->
+          {:ok, pandoc.html}
+
+        {_title, _pandoc} ->
           nil
       end)
       |> U.maybe_found()
@@ -27,35 +30,26 @@ defmodule Andrex.Blog do
     end
   end
 
-  def get_all_posts do
+  def get_all_posts(opts \\ [raw: false]) do
     posts_dir = posts_dir()
 
     posts_dir
     |> File.ls!()
     # TODO: Parallelize this
     |> Enum.map(fn post ->
-      markdown =
+      raw_markdown =
         posts_dir
         |> Path.join(post)
         |> File.read!()
 
-      html = html_from_markdown(markdown)
-
-      {post, html}
+      case opts do
+        [raw: true] ->
+          {post, raw_markdown}
+        _ ->
+          {:ok, pandoc} = Pandoc.from_markdown(raw_markdown)
+          {post, pandoc}
+      end
     end)
-  end
-
-  defp html_from_markdown(markdown) when is_binary(markdown) do
-    Panpipe.pandoc(markdown, to: :html)
-    |> case do
-      {:ok, html} ->
-        html
-
-      _ ->
-        Logger.warn("Problem converting the following markdown to HTML:\n#{markdown}")
-
-        "Problem converting markdown: #{String.slice(markdown, 0..30)}"
-    end
   end
 
   defp posts_dir do
