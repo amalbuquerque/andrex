@@ -11,7 +11,7 @@ defmodule Andrex.Blog do
 
     with {:ok, post_title} <- post_title(params),
          all_posts = get_all_posts() do
-      Logger.debug("Blog.get_post/1 trying to find: #{post_title}")
+      Logger.debug("Blog.get_post/1 trying to find title: #{post_title}")
 
       all_posts
       |> Enum.find_value(fn

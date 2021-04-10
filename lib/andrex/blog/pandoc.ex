@@ -52,8 +52,6 @@ defmodule Andrex.Blog.Pandoc do
   end
 
   defp parse_pandoc_ast_value(%{"c" => [%{"c" => split_value}]}) do
-    Logger.debug("Split value: #{inspect(split_value)}")
-
     Enum.reduce(split_value, [], fn
       %{"t" => "Str", "c" => v}, acc ->
         [v | acc]
