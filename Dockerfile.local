@@ -1,4 +1,4 @@
-FROM elixir@sha256:7b265545e9f936257dfc725609b7d0fcb50dee6a23b4a1efbbde8c9227a9007a
+FROM elixir@sha256:3fea98263286535cf4b111af74a5d2de7ce99e17f2e304ed383eef173a610775
 
 LABEL maintainer="amalbuquerque"
 
