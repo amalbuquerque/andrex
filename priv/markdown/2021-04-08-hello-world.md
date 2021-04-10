@@ -22,3 +22,7 @@ This is a quote:
 > André André André André André André André André André André André André André André André André André André André André André André André André André André André André André André André André André André André André André André André André 
 
 This is an [hyperlink](/)
+
+And below it's an image :art:
+
+![phoenix pic](/images/phoenix.png)
