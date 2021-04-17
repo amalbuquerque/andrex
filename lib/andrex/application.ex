@@ -12,9 +12,10 @@ defmodule Andrex.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Andrex.PubSub},
       # Start the Endpoint (http/https)
-      AndrexWeb.Endpoint
+      AndrexWeb.Endpoint,
       # Start a worker by calling: Andrex.Worker.start_link(arg)
       # {Andrex.Worker, arg}
+      Andrex.Blog.Cache
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

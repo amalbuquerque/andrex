@@ -5,7 +5,7 @@ Tags:    keyboards, elixir, geek
 Comment: This is a sample mmd title block, with
          a field spanning multiple lines.
 
-# Hello world
+# :rocket: Hello world
 
 This is a paragraph. **This is bold**, while this is _italic_, and `this is <code>`.
 
