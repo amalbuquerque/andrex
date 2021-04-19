@@ -7,6 +7,8 @@ defmodule Andrex.Blog do
   @priv_posts_path 'markdown'
 
   @all_posts_key :all_posts
+  @all_tags_key :all_tags
+  @titles_per_tag_key :titles_per_tag
 
   def get_post(params) do
     Logger.debug("Blog.get_post/1 trying to find: #{inspect(params)}")
@@ -32,15 +34,12 @@ defmodule Andrex.Blog do
     end
   end
 
-  def get_all_posts(opts \\ [raw: false, force_refresh: false]) do
+  def get_all_posts(opts \\ [force_refresh: false]) do
     force_refresh? = Keyword.get(opts, :force_refresh)
 
     case {Cache.get(@all_posts_key), force_refresh?} do
       {nil, _} ->
-        fresh_posts = get_posts_from_filesystem(opts)
-        Logger.debug("Fetched #{Enum.count(fresh_posts)} posts from filesystem: #{inspect(fresh_posts)}")
-
-        true = Cache.insert(@all_posts_key, fresh_posts)
+        {fresh_posts, _titles_per_tag} = refresh_cache()
         fresh_posts
 
       {posts, _force_refresh = false} ->
@@ -77,6 +76,49 @@ defmodule Andrex.Blog do
       end
     end)
   end
+
+  @doc """
+  Fetches the posts from the filesystem and:
+    - Caches all posts
+    - Caches each post using its title as the cache key
+    - Caches all tags
+    - Caches the list of post titles per tag
+  """
+  def refresh_cache do
+    fresh_posts = get_posts_from_filesystem()
+    Logger.debug("Fetched #{Enum.count(fresh_posts)} posts from filesystem: #{inspect(fresh_posts)}")
+
+    true = Cache.insert(@all_posts_key, fresh_posts)
+
+    tags = fresh_posts
+           |> Enum.reduce(%{}, fn {title, %Pandoc{metadata: metadata} = post}, acc ->
+             true = Cache.insert(title, post)
+
+             tags = tags_from_metadata(metadata)
+
+             tags
+             |> Enum.reduce(acc, fn tag, titles_per_tag ->
+               titles_per_tag
+               |> Map.update(tag,[title],
+                 fn existing_titles -> [title | existing_titles] end)
+             end)
+           end)
+
+    true = Cache.insert(@titles_per_tag_key, tags)
+
+    all_tags = Map.keys(tags)
+    true = Cache.insert(@all_tags_key, all_tags)
+
+    {fresh_posts, tags}
+  end
+
+  defp tags_from_metadata(%{tags: raw_tags}) do
+    raw_tags
+    |> String.split(",")
+    |> Enum.map(&String.trim/1)
+  end
+
+  defp tags_from_metadata(_), do: ["(no tags)"]
 
   defp posts_dir do
     :code.priv_dir(@app)
