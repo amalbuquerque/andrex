@@ -13,9 +13,9 @@ defmodule Andrex.Application do
       {Phoenix.PubSub, name: Andrex.PubSub},
       # Start the Endpoint (http/https)
       AndrexWeb.Endpoint,
-      # Start a worker by calling: Andrex.Worker.start_link(arg)
-      # {Andrex.Worker, arg}
-      Andrex.Blog.Cache
+
+      Andrex.Blog.Cache,
+      {Andrex.Blog.Refresher, {Andrex.Blog, :refresh_cache, []}}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

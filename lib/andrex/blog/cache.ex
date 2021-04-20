@@ -13,26 +13,28 @@ defmodule Andrex.Blog.Cache do
     {:ok, pid}
   end
 
-  def init(_) do
+  @impl true
+  def init([]) do
     ets = :ets.new(@name, @ets_options)
 
-    {:ok, ets: ets}
+    {:ok, %{ets: ets}}
   end
 
-  def handle_call(:get_ets, _from, [ets: ets] = state) do
-    # ets = :ets.whereis(@name)
-
+  @impl true
+  def handle_call(:get_ets, _from, %{ets: ets} = state) do
     {:reply, ets, state}
   end
 
-  def handle_call({:insert, key, value}, _from, [ets: ets] = state) do
+  @impl true
+  def handle_call({:insert, key, value}, _from, %{ets: ets} = state) do
 
     result = :ets.insert(ets, {key, value})
 
     {:reply, result, state}
   end
 
-  def handle_call({:get, key}, _from, [ets: ets] = state) do
+  @impl true
+  def handle_call({:get, key}, _from, %{ets: ets} = state) do
 
     :ets.lookup(ets, key)
     |> case do
