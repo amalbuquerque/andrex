@@ -14,7 +14,7 @@ defmodule AndrexWeb.BlogController do
     Logger.debug("Blog entry requested. Params: #{inspect(params)}")
 
     with {:ok, post} <- Blog.get_post(params) do
-      render(conn, "entry.html", post: post)
+      render(conn, "entry.html", post: post.html)
     end
   end
 end

@@ -1,6 +1,5 @@
 defmodule Andrex.Blog do
   require Logger
-  alias Andrex.Utils, as: U
   alias Andrex.Blog.{Pandoc, Cache}
 
   @app :andrex
@@ -14,23 +13,18 @@ defmodule Andrex.Blog do
     Logger.debug("Blog.get_post/1 trying to find: #{inspect(params)}")
 
     with {:ok, post_title} <- post_title(params),
-         all_posts = get_all_posts() do
-      Logger.debug("Blog.get_post/1 trying to find title: #{post_title}")
-
-      all_posts
-      |> Enum.find_value(fn
-        {title, pandoc} when title == post_title ->
-          Logger.debug("While trying to find #{post_title}, found #{inspect(pandoc)}")
-
-          {:ok, pandoc.html}
-
-        {_title, _pandoc} ->
-          nil
-      end)
-      |> U.maybe_found()
+         Logger.debug("Blog.get_post/1 trying to find title: #{post_title}"),
+         %Pandoc{} = pandoc <- Cache.get(post_title)
+    do
+      {:ok, pandoc}
     else
+      nil ->
+        {:error, :not_found}
+
       error ->
-        error
+        Logger.error("Unexpected error while trying to find post: #{inspect(error)}")
+
+        {:error, error}
     end
   end
 
