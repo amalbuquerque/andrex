@@ -15,6 +15,11 @@ defmodule AndrexWeb.BlogController do
 
     with {:ok, post} <- Blog.get_post(params) do
       render(conn, "entry.html", post: post.html)
+    else
+      {:error, :not_found} ->
+        conn
+        |> put_flash(:error, "Blog entry not found.")
+        |> redirect(to: Routes.blog_path(conn, :index))
     end
   end
 end
