@@ -4,9 +4,9 @@ defmodule Andrex.Blog.Pandoc do
   @pandoc_from_rule {:markdown_mmd, [:emoji]}
   @pandoc_to_rule {:html, %{enable: [:mmd_title_block]}}
 
-  defstruct [:metadata, :raw_markdown, :html]
+  defstruct [:metadata, :raw_markdown, :html, :filename]
 
-  def from_markdown(markdown) when is_binary(markdown) do
+  def from_markdown(filename, markdown) when is_binary(markdown) do
     metadata = metadata_from_markdown(markdown)
 
     Panpipe.pandoc(markdown,
@@ -28,7 +28,8 @@ defmodule Andrex.Blog.Pandoc do
       result = %__MODULE__{
         metadata: metadata,
         raw_markdown: markdown,
-        html: html
+        html: html,
+        filename: filename
       }
 
       {:ok, result}

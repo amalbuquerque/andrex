@@ -55,18 +55,18 @@ defmodule Andrex.Blog do
     posts_dir
     |> File.ls!()
     # TODO: Parallelize this
-    |> Enum.map(fn post ->
+    |> Enum.map(fn post_filename ->
       raw_markdown =
         posts_dir
-        |> Path.join(post)
+        |> Path.join(post_filename)
         |> File.read!()
 
       case Keyword.get(opts, :raw) do
         true ->
-          {post, raw_markdown}
+          raw_markdown
         _ ->
-          {:ok, pandoc} = Pandoc.from_markdown(raw_markdown)
-          {post, pandoc}
+          {:ok, pandoc} = Pandoc.from_markdown(post_filename, raw_markdown)
+          pandoc
       end
     end)
   end
@@ -85,7 +85,7 @@ defmodule Andrex.Blog do
     true = Cache.insert(@all_posts_key, fresh_posts)
 
     tags = fresh_posts
-           |> Enum.reduce(%{}, fn {title, %Pandoc{metadata: metadata} = post}, acc ->
+           |> Enum.reduce(%{}, fn %Pandoc{metadata: metadata, filename: title} = post, acc ->
              true = Cache.insert(title, post)
 
              tags = tags_from_metadata(metadata)
