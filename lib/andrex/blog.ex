@@ -1,6 +1,6 @@
 defmodule Andrex.Blog do
   require Logger
-  alias Andrex.Blog.{Pandoc, Cache}
+  alias Andrex.Blog.{Cache, Entry}
 
   @app :andrex
   @priv_posts_path 'markdown'
@@ -12,11 +12,11 @@ defmodule Andrex.Blog do
   def get_post(params) do
     Logger.debug("Blog.get_post/1 trying to find: #{inspect(params)}")
 
-    with {:ok, post_title} <- post_title(params),
-         Logger.debug("Blog.get_post/1 trying to find title: #{post_title}"),
-         %Pandoc{} = pandoc <- Cache.get(post_title)
+    with {:ok, post_filename} <- post_filename(params),
+         Logger.debug("Blog.get_post/1 trying to find post: #{post_filename}"),
+         %Entry{} = blog_entry <- Cache.get(post_filename)
     do
-      {:ok, pandoc}
+      {:ok, blog_entry}
     else
       nil ->
         {:error, :not_found}
@@ -65,8 +65,8 @@ defmodule Andrex.Blog do
         true ->
           raw_markdown
         _ ->
-          {:ok, pandoc} = Pandoc.from_markdown(post_filename, raw_markdown)
-          pandoc
+          {:ok, blog_entry} = Entry.from_markdown(post_filename, raw_markdown)
+          blog_entry
       end
     end)
   end
@@ -80,21 +80,20 @@ defmodule Andrex.Blog do
   """
   def refresh_cache do
     fresh_posts = get_posts_from_filesystem()
+
     Logger.debug("Fetched #{Enum.count(fresh_posts)} posts from filesystem: #{inspect(fresh_posts)}")
 
     true = Cache.insert(@all_posts_key, fresh_posts)
 
     tags = fresh_posts
-           |> Enum.reduce(%{}, fn %Pandoc{metadata: metadata, filename: title} = post, acc ->
-             true = Cache.insert(title, post)
-
-             tags = tags_from_metadata(metadata)
+           |> Enum.reduce(%{}, fn %Entry{tags: tags, filename: filename} = post, acc ->
+             true = Cache.insert(filename, post)
 
              tags
-             |> Enum.reduce(acc, fn tag, titles_per_tag ->
-               titles_per_tag
-               |> Map.update(tag,[title],
-                 fn existing_titles -> [title | existing_titles] end)
+             |> Enum.reduce(acc, fn tag, filenames_per_tag ->
+               filenames_per_tag
+               |> Map.update(tag,[filename],
+                 fn existing_filenames -> [filename | existing_filenames] end)
              end)
            end)
 
@@ -106,22 +105,14 @@ defmodule Andrex.Blog do
     {fresh_posts, tags}
   end
 
-  defp tags_from_metadata(%{tags: raw_tags}) do
-    raw_tags
-    |> String.split(",")
-    |> Enum.map(&String.trim/1)
-  end
-
-  defp tags_from_metadata(_), do: ["(no tags)"]
-
   defp posts_dir do
     :code.priv_dir(@app)
     |> Path.join(@priv_posts_path)
   end
 
-  defp post_title(%{"day" => day, "month" => month, "title" => title, "year" => year}) do
+  defp post_filename(%{"day" => day, "month" => month, "title" => title, "year" => year}) do
     {:ok, "#{year}-#{month}-#{day}-#{title}.md"}
   end
 
-  defp post_title(_), do: {:error, :invalid_title_params}
+  defp post_filename(_), do: {:error, :invalid_filename_params}
 end

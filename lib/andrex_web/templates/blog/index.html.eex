@@ -1,0 +1,34 @@
+<section class="phx-hero">
+  <h1><%= gettext "Welcome to %{name}!", name: "my Blog" %></h1>
+</section>
+
+<section class="row">
+  <article class="column column-80">
+    <dl>
+      <%= for post <- @posts do %>
+      <dt>
+        <h2>
+          <a href="<%= Routes.blog_path(AndrexWeb.Endpoint, :entry, post.year, post.month, post.day, post.url_title) %>"><%= post.pandoc.metadata.title %></a>
+        </h2>
+        <h4>📅 <%= post.pandoc.metadata.date %></h4>
+        <h4>🏷️ <%= post.pandoc.metadata.tags %></h4>
+        <p><%= post.pandoc.metadata.description %><a href="<%= Routes.blog_path(AndrexWeb.Endpoint, :entry, post.year, post.month, post.day, post.url_title) %>"> Read more...</a></p>
+      </dt>
+      <% end %>
+    </dl>
+  </article>
+  <article class="column">
+    <h2>Tags</h2>
+    <ul>
+      <li>
+        <a href="https://elixirforum.com/c/phoenix-forum">Tag 1</a>
+      </li>
+      <li>
+        <a href="https://webchat.freenode.net/?channels=elixir-lang">Tag 2</a>
+      </li>
+      <li>
+        <a href="https://twitter.com/elixirphoenix">Tag 3</a>
+      </li>
+    </ul>
+  </article>
+</section>

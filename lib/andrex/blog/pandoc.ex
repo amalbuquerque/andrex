@@ -6,7 +6,7 @@ defmodule Andrex.Blog.Pandoc do
 
   defstruct [:metadata, :raw_markdown, :html, :filename]
 
-  def from_markdown(filename, markdown) when is_binary(markdown) do
+  def from_markdown(markdown) when is_binary(markdown) do
     metadata = metadata_from_markdown(markdown)
 
     Panpipe.pandoc(markdown,
@@ -28,8 +28,7 @@ defmodule Andrex.Blog.Pandoc do
       result = %__MODULE__{
         metadata: metadata,
         raw_markdown: markdown,
-        html: html,
-        filename: filename
+        html: html
       }
 
       {:ok, result}

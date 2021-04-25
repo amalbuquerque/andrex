@@ -1,9 +1,10 @@
-Title:   My title
-Author:  John Doe
-Date:    September 1, 2008
-Tags:    keyboards, elixir, geek
-Comment: This is a sample mmd title block, with
-         a field spanning multiple lines.
+Title:       Hello, World!
+Author:      André Albuquerque
+Date:        April 8, 2021
+Tags:        keyboards, elixir, geek
+Description: This description is a sample mmd title block,
+             spanning multiple lines. The description should provide a
+             one-paragraph summary of the post.
 
 # :rocket: Hello world
 
