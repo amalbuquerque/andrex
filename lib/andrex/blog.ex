@@ -1,5 +1,6 @@
 defmodule Andrex.Blog do
   require Logger
+  alias Andrex.Utils
   alias Andrex.Blog.{Cache, Entry}
 
   @app :andrex
@@ -7,13 +8,34 @@ defmodule Andrex.Blog do
 
   @all_posts_key :all_posts
   @all_tags_key :all_tags
-  @titles_per_tag_key :titles_per_tag
+  @filenames_per_tag_key :filenames_per_tag
 
-  def get_post(params) do
-    Logger.debug("Blog.get_post/1 trying to find: #{inspect(params)}")
+  def filenames_per_tag(tag \\ nil) do
+    case tag do
+      nil ->
+        # get all tags
+        Cache.get(@filenames_per_tag_key)
+      tag ->
+        @filenames_per_tag_key
+        |> Cache.get()
+        |> Map.get(tag)
+    end
+    |> Utils.maybe_found()
+  end
 
-    with {:ok, post_filename} <- post_filename(params),
-         Logger.debug("Blog.get_post/1 trying to find post: #{post_filename}"),
+  def get_post!(params_or_filename) do
+    case get_post(params_or_filename) do
+      {:ok, post} ->
+        post
+      error ->
+        error
+    end
+  end
+
+  def get_post(params_or_filename) do
+    Logger.debug("Blog.get_post/1 trying to find: #{inspect(params_or_filename)}")
+
+    with {:ok, post_filename} <- post_filename(params_or_filename),
          %Entry{} = blog_entry <- Cache.get(post_filename)
     do
       {:ok, blog_entry}
@@ -21,10 +43,10 @@ defmodule Andrex.Blog do
       nil ->
         {:error, :not_found}
 
-      error ->
+      {:error, _reason} = error ->
         Logger.error("Unexpected error while trying to find post: #{inspect(error)}")
 
-        {:error, error}
+        error
     end
   end
 
@@ -33,7 +55,7 @@ defmodule Andrex.Blog do
 
     case {Cache.get(@all_posts_key), force_refresh?} do
       {nil, _} ->
-        {fresh_posts, _titles_per_tag} = refresh_cache()
+        {fresh_posts, _filenames_per_tag} = refresh_cache()
         fresh_posts
 
       {posts, _force_refresh = false} ->
@@ -74,9 +96,9 @@ defmodule Andrex.Blog do
   @doc """
   Fetches the posts from the filesystem and:
     - Caches all posts
-    - Caches each post using its title as the cache key
+    - Caches each post using its filename as the cache key
     - Caches all tags
-    - Caches the list of post titles per tag
+    - Caches the list of post filenames per tag
   """
   def refresh_cache do
     fresh_posts = get_posts_from_filesystem()
@@ -98,7 +120,7 @@ defmodule Andrex.Blog do
              end)
            end)
 
-    true = Cache.insert(@titles_per_tag_key, tags)
+    true = Cache.insert(@filenames_per_tag_key, tags)
 
     all_tags = Map.keys(tags)
     true = Cache.insert(@all_tags_key, all_tags)
@@ -109,6 +131,10 @@ defmodule Andrex.Blog do
   defp posts_dir do
     :code.priv_dir(@app)
     |> Path.join(@priv_posts_path)
+  end
+
+  defp post_filename(post_filename) when is_binary(post_filename) do
+    {:ok, post_filename}
   end
 
   defp post_filename(%{"day" => day, "month" => month, "title" => title, "year" => year}) do

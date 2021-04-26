@@ -19,6 +19,7 @@ defmodule AndrexWeb.Router do
     get "/", PageController, :index
     get "/blog", BlogController, :index
     get "/blog/:year/:month/:day/:title", BlogController, :entry
+    get "/tag/:tag", BlogController, :tag
   end
 
   # Other scopes may use custom stacks.

@@ -15,15 +15,11 @@
   <article class="column">
     <h2>Tags</h2>
     <ul>
-      <li>
-        <a href="https://elixirforum.com/c/phoenix-forum">Tag 1</a>
-      </li>
-      <li>
-        <a href="https://webchat.freenode.net/?channels=elixir-lang">Tag 2</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/elixirphoenix">Tag 3</a>
-      </li>
+      <%= for {tag, titles} <- @filenames_per_tag do %>
+        <li>
+          <a href="<%= Routes.blog_path(AndrexWeb.Endpoint, :tag, tag) %>"><%= tag %> (<%= length(titles) %>)</a>
+        </li>
+      <% end %>
     </ul>
   </article>
 </section>
