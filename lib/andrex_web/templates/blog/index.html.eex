@@ -7,12 +7,7 @@
     <dl>
       <%= for post <- @posts do %>
       <dt>
-        <h2>
-          <a href="<%= Routes.blog_path(AndrexWeb.Endpoint, :entry, post.year, post.month, post.day, post.url_title) %>"><%= post.pandoc.metadata.title %></a>
-        </h2>
-        <h4>📅 <%= post.pandoc.metadata.date %></h4>
-        <h4>🏷️ <%= post.pandoc.metadata.tags %></h4>
-        <p><%= post.pandoc.metadata.description %><a href="<%= Routes.blog_path(AndrexWeb.Endpoint, :entry, post.year, post.month, post.day, post.url_title) %>"> Read more...</a></p>
+        <%= Phoenix.View.render(AndrexWeb.BlogView, "summary.html", post: post) %>
       </dt>
       <% end %>
     </dl>

@@ -80,6 +80,7 @@ defmodule Andrex.Blog do
   """
   def refresh_cache do
     fresh_posts = get_posts_from_filesystem()
+                  |> Enum.sort_by(&(&1.filename), :desc)
 
     Logger.debug("Fetched #{Enum.count(fresh_posts)} posts from filesystem: #{inspect(fresh_posts)}")
 
