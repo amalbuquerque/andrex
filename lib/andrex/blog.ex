@@ -10,16 +10,19 @@ defmodule Andrex.Blog do
   @all_tags_key :all_tags
   @filenames_per_tag_key :filenames_per_tag
 
-  def filenames_per_tag(tag \\ nil) do
-    case tag do
-      nil ->
-        # get all tags
-        Cache.get(@filenames_per_tag_key)
-      tag ->
-        @filenames_per_tag_key
-        |> Cache.get()
-        |> Map.get(tag)
-    end
+  def filenames_per_tag(tag \\ nil)
+
+  def filenames_per_tag(nil) do
+    # get all tags
+    @filenames_per_tag_key
+    |> Cache.get()
+    |> Utils.maybe_found()
+  end
+
+  def filenames_per_tag(tag) do
+    @filenames_per_tag_key
+    |> Cache.get()
+    |> Map.get(tag)
     |> Utils.maybe_found()
   end
 
