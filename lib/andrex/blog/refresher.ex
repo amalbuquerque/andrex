@@ -4,17 +4,17 @@ defmodule Andrex.Blog.Refresher do
 
   @name __MODULE__
 
-  def start_link(callback) do
-    {:ok, pid} = GenServer.start_link(@name, callback, name: @name)
+  def start_link(callbacks) do
+    {:ok, pid} = GenServer.start_link(@name, callbacks, name: @name)
 
-    Logger.info("📓 Started Andrex.Blog.Refresher 📓Callback: #{inspect(callback)}", pid: pid)
+    Logger.info("📓 Started Andrex.Blog.Refresher 📓Callbacks: #{inspect(callbacks)}", pid: pid)
 
     {:ok, pid}
   end
 
   @impl true
-  def init(callback) do
-    schedule_callback(callback)
+  def init(callbacks) do
+    schedule_callbacks(callbacks)
 
     {:ok, []}
   end
@@ -28,7 +28,15 @@ defmodule Andrex.Blog.Refresher do
     {:noreply, state}
   end
 
-  defp schedule_callback(callback) do
+  defp schedule_callbacks([]), do: :nop
+
+  defp schedule_callbacks([callback | rest]) do
+    Process.send_after(self(), {:callback, callback}, :timer.seconds(5))
+
+    schedule_callbacks(rest)
+  end
+
+  defp schedule_callbacks(callback) when is_tuple(callback) do
     Process.send_after(self(), {:callback, callback}, :timer.seconds(5))
   end
 end

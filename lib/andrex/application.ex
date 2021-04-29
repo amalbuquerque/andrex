@@ -15,7 +15,13 @@ defmodule Andrex.Application do
       AndrexWeb.Endpoint,
 
       Andrex.Blog.Cache,
-      {Andrex.Blog.Refresher, {Andrex.Blog, :refresh_cache, []}}
+      {
+        Andrex.Blog.Refresher,
+        [
+          {Andrex.Blog, :refresh_cache, []},
+          {Andrex.Main, :refresh_cache, []}
+        ]
+      }
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
