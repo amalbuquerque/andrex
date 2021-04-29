@@ -24,6 +24,23 @@ defmodule Andrex.Blog.Entry do
     end
   end
 
+  def from_markdown_without_date(filename, markdown) when is_binary(filename) and is_binary(markdown) do
+    with {:ok, %Pandoc{metadata: metadata} = pandoc} <- Pandoc.from_markdown(markdown),
+         url_title = String.replace_suffix(filename, ".md", "") do
+
+      result = %__MODULE__{
+        tags: tags_from_metadata(metadata),
+        filename: filename,
+        url_title: url_title,
+        pandoc: pandoc,
+      }
+
+      {:ok, result}
+    else
+      error -> error
+    end
+  end
+
   defp yyyy_mm_dd_from_filename(filename) do
     filename
     |> String.split("-")

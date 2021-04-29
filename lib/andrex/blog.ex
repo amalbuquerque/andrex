@@ -59,18 +59,20 @@ defmodule Andrex.Blog do
     case {Cache.get(@all_posts_key), force_refresh?} do
       {nil, _} ->
         {fresh_posts, _filenames_per_tag} = refresh_cache()
+        Logger.debug("No posts were cached. Fetched and cached #{Enum.count(fresh_posts)} posts: #{inspect(fresh_posts)}")
+
+        fresh_posts
+
+      {_posts, _force_refresh = true} ->
+        {fresh_posts, _filenames_per_tag} = refresh_cache()
+        Logger.debug("Refreshed #{Enum.count(fresh_posts)} posts: #{inspect(fresh_posts)}")
+
         fresh_posts
 
       {posts, _force_refresh = false} ->
         Logger.debug("Found #{Enum.count(posts)} cached posts: #{inspect(posts)}")
+
         posts
-
-      {_posts, _force_refresh = true} ->
-        fresh_posts = get_posts_from_filesystem(opts)
-        Logger.debug("Force fetched #{Enum.count(fresh_posts)} posts: #{inspect(fresh_posts)}")
-
-        true = Cache.insert(@all_posts_key, fresh_posts)
-        fresh_posts
     end
   end
 
