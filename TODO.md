@@ -1,6 +1,6 @@
 # TODO
 
-- List of places in the navbar (`lib/andrex_web/templates/layout/app.html.eex`)
+- List of places in the navbar (`lib/andrex_web/templates/layout/app.html.eex`) composed by the `main` articles
   * About -> /about
   * CV -> /cv
   * Blog -> /blog
@@ -21,3 +21,4 @@
 - Extract the post entry section to its own template, and reuse the `post_url`
 - New /blog/tag/<tag> route that lists all the posts with the given tag
   * It should redirect to the homepage with a Flash if no tag exists
+- Each `priv/markdown/main` markdown articles are cached and the `GET /:article` route tries to fetch the `"article.md"` from cache
