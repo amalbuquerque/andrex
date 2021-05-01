@@ -1,9 +1,5 @@
 # TODO
 
-- List of places in the navbar (`lib/andrex_web/templates/layout/app.html.eex`) composed by the `main` articles
-  * About -> /about
-  * CV -> /cv
-  * Blog -> /blog
 - Validate each markdown input file has required metadata and format (filename `yyyy-mm-dd-title-kebab-case.md`, `Title` and `Description` metadata fields)
 - Provision VPS and automate deployment (dokku?)
 - RSS
@@ -22,3 +18,7 @@
 - New /blog/tag/<tag> route that lists all the posts with the given tag
   * It should redirect to the homepage with a Flash if no tag exists
 - Each `priv/markdown/main` markdown articles are cached and the `GET /:article` route tries to fetch the `"article.md"` from cache
+- List of places in the navbar (`lib/andrex_web/templates/layout/app.html.eex`) composed by the `main` articles
+  * About -> /about
+  * CV -> /cv
+  * Blog -> /blog

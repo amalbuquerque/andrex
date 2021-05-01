@@ -13,10 +13,17 @@
       <section class="container">
         <nav role="navigation">
           <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/blog">Blog</a></li>
-            <li><a href="/cv">Curriculum Vitae</a></li>
+            <li>
+              <a href="<%= Routes.page_path(@conn, :index) %>">Home</a>
+            </li>
+            <li>
+              <a href="<%= Routes.blog_path(@conn, :index) %>">Blog</a>
+            </li>
+            <%= for main_article <- Andrex.Main.get_all_main_pages() do %>
+              <li>
+                <a href="<%= Routes.main_path(@conn, :page, main_article.url_title) %>"><%= main_article.pandoc.metadata.title %></a>
+              </li>
+            <% end %>
             <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
               <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
             <% end %>

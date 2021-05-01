@@ -1,4 +1,4 @@
-Title:       CV
+Title:       Curriculum Vitae
 Author:      André Albuquerque
 Updated at:  April 27, 2021
 
