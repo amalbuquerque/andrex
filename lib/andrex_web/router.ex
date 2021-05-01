@@ -39,7 +39,7 @@ defmodule AndrexWeb.Router do
   if Mix.env() in [:dev, :test] do
     import Phoenix.LiveDashboard.Router
 
-    scope "/" do
+    scope "/debug" do
       pipe_through :browser
       live_dashboard "/dashboard", metrics: AndrexWeb.Telemetry
     end
