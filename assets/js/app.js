@@ -13,3 +13,11 @@ import "../css/app.scss"
 //     import socket from "./socket"
 //
 import "phoenix_html"
+
+document.getElementById("hamburger").onclick = function toggleMenu() {
+  console.log("Clicking on the burger!");
+  const navToggle = document.getElementsByClassName("toggle");
+  for (let i = 0; i < navToggle.length; i++) {
+    navToggle.item(i).classList.toggle("hidden");
+  }
+};

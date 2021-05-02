@@ -5,34 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Andrex · Phoenix Framework</title>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
     <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </head>
   <body>
     <header>
-      <section class="container">
-        <nav role="navigation">
-          <ul>
-            <li>
-              <a href="<%= Routes.page_path(@conn, :index) %>">Home</a>
-            </li>
-            <li>
-              <a href="<%= Routes.blog_path(@conn, :index) %>">Blog</a>
-            </li>
-            <%= for main_article <- Andrex.Main.get_all_main_pages() do %>
-              <li>
-                <a href="<%= Routes.main_path(@conn, :page, main_article.url_title) %>"><%= main_article.pandoc.metadata.title %></a>
-              </li>
-            <% end %>
-            <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-              <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
-            <% end %>
-          </ul>
-        </nav>
-        <a href="/" class="phx-logo">
-          <img src="<%= Routes.static_path(@conn, "/images/phoenix.png") %>" alt="Phoenix Framework Logo"/>
-        </a>
-      </section>
+      <%= Phoenix.View.render(AndrexWeb.LayoutView, "navbar.html", conn: @conn) %>
     </header>
     <main role="main" class="container">
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
