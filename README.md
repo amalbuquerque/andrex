@@ -17,3 +17,11 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
   * Docs: https://hexdocs.pm/phoenix
   * Forum: https://elixirforum.com/c/phoenix-forum
   * Source: https://github.com/phoenixframework/phoenix
+
+## Resources
+
+Followed:
+- https://pragmaticstudio.com/tutorials/adding-tailwind-css-to-phoenix (to setup Tailwind)
+- https://w3collective.com/responsive-navbar-tailwind-css/ (copied navbar from it)
+- https://v1.tailwindcss.com/components/alerts (copied alert templates from it)
+- https://github.com/tailwindlabs/tailwindcss-typography (to have the pretty article)

@@ -1,5 +1,7 @@
 <div class="flex md:flex-row flex-wrap">
   <div class="w-full md:w-full p-10 text-gray-600">
-    <%= raw @raw %>
+      <article class="prose lg:prose-xl">
+        <%= raw @raw %>
+      </article>
   </div>
 </div>
