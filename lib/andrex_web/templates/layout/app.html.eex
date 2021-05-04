@@ -13,7 +13,7 @@
     <header>
       <%= Phoenix.View.render(AndrexWeb.LayoutView, "navbar.html", conn: @conn) %>
     </header>
-    <main role="main" class="container">
+    <main role="main" class="md:container md:mx-auto">
       <%= Phoenix.View.render(AndrexWeb.LayoutView, "alerts.html", conn: @conn) %>
       <%= @inner_content %>
     </main>

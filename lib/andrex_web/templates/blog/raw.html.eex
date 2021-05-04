@@ -1,1 +1,5 @@
-<%= raw @raw %>
+<div class="flex md:flex-row flex-wrap">
+  <div class="w-full md:w-full p-10 text-gray-600">
+    <%= raw @raw %>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+@layer base {
+    h1 {
+        @apply text-3xl;
+        @apply leading-loose;
+        @apply mt-3;
+    }
+
+    h2 {
+        @apply text-2xl;
+        @apply leading-loose;
+        @apply mt-3;
+    }
+
+    h3 {
+        @apply text-xl;
+        @apply leading-loose;
+        @apply mt-3;
+    }
+}

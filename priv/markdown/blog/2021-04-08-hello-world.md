@@ -12,11 +12,15 @@ This is a paragraph. **This is bold**, while this is _italic_, and `this is <cod
 
 This is an emoji :rainbow:
 
+## :wave: Smaller title
+
 A block of code below:
 
 ```
 This is a block of code
 ```
+
+### :mag: An even smaller title
 
 This is a quote:
 

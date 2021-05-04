@@ -1,18 +1,14 @@
-<section class="phx-hero">
-  <h1><%= gettext "Welcome to %{name}!", name: "my Blog" %></h1>
-</section>
-
-<section class="row">
-  <article class="column column-80">
+<div class="flex md:flex-row flex-wrap">
+  <div class="w-full md:w-3/4 p-4 text-gray-600">
     <dl>
       <%= for post <- @posts do %>
-      <dt>
+      <dt class="my-3">
         <%= Phoenix.View.render(AndrexWeb.BlogView, "summary.html", post: post) %>
       </dt>
       <% end %>
     </dl>
-  </article>
-  <article class="column">
+  </div>
+  <div class="w-full md:w-1/4 bg-gray-200 p-4 text-gray-700">
     <h2>Tags</h2>
     <ul>
       <%= for {tag, titles} <- @filenames_per_tag do %>
@@ -21,5 +17,12 @@
         </li>
       <% end %>
     </ul>
+  </div>
+</div>
+
+<section class="row">
+  <article class="column column-80">
+  </article>
+  <article class="column">
   </article>
 </section>
