@@ -8,12 +8,12 @@
       <% end %>
     </dl>
   </div>
-  <div class="w-full md:w-1/4 bg-gray-200 p-4 text-gray-700">
-    <h2>Tags</h2>
+  <div class="prose lg:prose-xl w-full md:w-1/4 bg-gray-200 p-4 text-gray-700">
+    <h3>Tags</h3>
     <ul>
       <%= for {tag, titles} <- @filenames_per_tag do %>
         <li>
-          <a href="<%= Routes.blog_path(AndrexWeb.Endpoint, :tag, tag) %>"><%= tag %> (<%= length(titles) %>)</a>
+          <a href="<%= Routes.blog_path(AndrexWeb.Endpoint, :tag, tag) %>"><%= tag %>&nbsp;(<%= length(titles) %>)</a>
         </li>
       <% end %>
     </ul>
