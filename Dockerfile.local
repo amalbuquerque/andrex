@@ -1,4 +1,4 @@
-FROM elixir@sha256:3fea98263286535cf4b111af74a5d2de7ce99e17f2e304ed383eef173a610775
+FROM elixir:1.12.0-rc.1
 
 LABEL maintainer="amalbuquerque"
 

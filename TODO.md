@@ -22,3 +22,4 @@
   * About -> /about
   * CV -> /cv
   * Blog -> /blog
+- Pretty CSS + Navbar with Tailwind CSS 
