@@ -8,6 +8,8 @@ defmodule Andrex.MixProject do
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      build_path: System.get_env("ELIXIR_BUILD_PATH") || "./_build",
+      deps_path: System.get_env("ELIXIR_DEPS_PATH") || "./deps",
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
