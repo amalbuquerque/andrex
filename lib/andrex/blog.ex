@@ -3,9 +3,6 @@ defmodule Andrex.Blog do
   alias Andrex.Utils
   alias Andrex.Blog.{Cache, Entry}
 
-  @app :andrex
-  @priv_blog_posts_path 'markdown/blog'
-
   @all_posts_key :all_posts
   @all_tags_key :all_tags
   @filenames_per_tag_key :filenames_per_tag
@@ -132,8 +129,9 @@ defmodule Andrex.Blog do
   end
 
   defp posts_dir do
-    :code.priv_dir(@app)
-    |> Path.join(@priv_blog_posts_path)
+    {:ok, path} = Utils.content_dir_path("blog")
+
+    path
   end
 
   defp post_filename(post_filename) when is_binary(post_filename) do

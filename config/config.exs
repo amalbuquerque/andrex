@@ -8,6 +8,9 @@ config :andrex, AndrexWeb.Endpoint,
   pubsub_server: Andrex.PubSub,
   live_view: [signing_salt: "A2x3y9cl"]
 
+config :andrex, :paths,
+  content_root_folder: "priv/content"
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

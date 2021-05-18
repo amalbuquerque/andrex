@@ -3,11 +3,10 @@ defmodule Andrex.Main do
   Functions that enable the so-called "main" pages.
   """
 
+  alias Andrex.Utils
   alias Andrex.Blog.{Cache, Entry}
   require Logger
 
-  @app :andrex
-  @priv_main_pages_path 'markdown/main'
   @all_pages_key :all_pages
 
   def get_all_main_pages(opts \\ [force_refresh: false]) do
@@ -93,7 +92,8 @@ defmodule Andrex.Main do
   end
 
   defp main_pages_dir do
-    :code.priv_dir(@app)
-    |> Path.join(@priv_main_pages_path)
+    {:ok, path} = Utils.content_dir_path("main")
+
+    path
   end
 end
