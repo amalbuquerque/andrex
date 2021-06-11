@@ -42,17 +42,31 @@ defmodule Andrex.Blog.Pandoc do
       "#{inspect(String.slice(markdown, 0..100))} produced the following Pandoc AST meta:\n#{inspect(metadata)}"
     )
 
+    aggregate_metadata(metadata)
+  end
+
+  defp aggregate_metadata(metadata) do
     metadata
     |> Enum.reduce(%{}, fn {key, value}, acc ->
-      key = String.to_atom(key)
       parsed_value = parse_pandoc_ast_value(value)
 
-      Map.put(acc, key, parsed_value)
+      {key_to_store, value_to_store} = case key do
+        "andrex-" <> andrex_key ->
+          andrex_metadata = acc[:andrex] || %{}
+          andrex_metadata = Map.put(andrex_metadata, andrex_key, parsed_value)
+
+          {:andrex, andrex_metadata}
+
+        metadata_key ->
+          {String.to_atom(metadata_key), parsed_value}
+      end
+
+      Map.put(acc, key_to_store, value_to_store)
     end)
   end
 
   defp parse_pandoc_ast_value(%{"c" => [%{"c" => split_value}]}) do
-    Enum.reduce(split_value, [], fn
+    v = Enum.reduce(split_value, [], fn
       %{"t" => "Str", "c" => v}, acc ->
         [v | acc]
 
@@ -61,6 +75,12 @@ defmodule Andrex.Blog.Pandoc do
     end)
     |> Enum.reverse()
     |> Enum.join(" ")
+
+    cond do
+      v in ["True", "true", "T"] -> true
+      v in ["False", "false", "F"] -> false
+      v -> v
+    end
   end
 
   defp pandoc_ast_from_markdown(markdown),

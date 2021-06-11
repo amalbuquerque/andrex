@@ -1,7 +1,7 @@
 defmodule Andrex.Blog.Entry do
   alias Andrex.Blog.Pandoc
 
-  defstruct [:tags, :year, :month, :day, :url_title, :filename, :pandoc]
+  defstruct [:tags, :year, :month, :day, :url_title, :filename, :pandoc, :andrex]
 
   def from_markdown(filename, markdown) when is_binary(filename) and is_binary(markdown) do
     with {:ok, %Pandoc{metadata: metadata} = pandoc} <- Pandoc.from_markdown(markdown),
@@ -16,6 +16,7 @@ defmodule Andrex.Blog.Entry do
         filename: filename,
         url_title: url_title,
         pandoc: pandoc,
+        andrex: metadata[:andrex] || %{}
       }
 
       {:ok, result}
@@ -33,6 +34,7 @@ defmodule Andrex.Blog.Entry do
         filename: filename,
         url_title: url_title,
         pandoc: pandoc,
+        andrex: metadata[:andrex] || %{}
       }
 
       {:ok, result}
