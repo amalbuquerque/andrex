@@ -8,6 +8,15 @@ defmodule Andrex.Main do
   require Logger
 
   @all_pages_key :all_pages
+  @hide_from_navbar_option "hidefromnavbar"
+
+  def get_navbar_pages(opts \\ [force_refresh: false]) do
+    opts
+    |> get_all_main_pages()
+    |> Enum.reject(fn %Entry{andrex: andrex_opts} ->
+      andrex_opts[@hide_from_navbar_option]
+    end)
+  end
 
   def get_all_main_pages(opts \\ [force_refresh: false]) do
     force_refresh? = Keyword.get(opts, :force_refresh)

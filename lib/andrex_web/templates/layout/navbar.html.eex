@@ -39,7 +39,7 @@
 
             <a href="<%= Routes.blog_path(@conn, :index) %>" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Blog</a>
 
-            <%= for main_article <- Andrex.Main.get_all_main_pages() do %>
+            <%= for main_article <- Andrex.Main.get_navbar_pages() do %>
               <a href="<%= Routes.main_path(@conn, :page, main_article.url_title) %>" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"><%= main_article.pandoc.metadata.title %></a>
             <% end %>
             <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
