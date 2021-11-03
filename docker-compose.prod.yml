@@ -1,0 +1,11 @@
+version: "2.2"
+services:
+  andrex:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    ports:
+      - 4003:4000
+    env_file: ./env/dev.env
+    networks:
+      - default
