@@ -1,10 +1,15 @@
 upstream deploy_phoenix {
-  server andrex:4003;
+  server localhost:4003;
 }
 
 map $http_upgrade $connection_upgrade {
   default upgrade;
   '' close;
+}
+
+server {
+    server_name www.a14e.eu;
+    return 301 $scheme://a14e.eu$request_uri;
 }
 
 server {
