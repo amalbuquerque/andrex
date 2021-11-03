@@ -10,7 +10,8 @@ import Config
 # which you should run after static files are built and
 # before starting your production server.
 config :andrex, AndrexWeb.Endpoint,
-  url: [host: "example.com", port: 80],
+  http: [port: 4000],
+  url: [host: "a14e.eu", port: 443],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production

@@ -1,21 +1,11 @@
 version: "2.2"
 services:
-  nginx:
-    image: nginx:1.21.3
-    volumes:
-      - /home/deploy/certbot:/home/deploy/certbot
-      - ./nginx/sites-enabled:/etc/nginx/sites-enabled
-    ports:
-      - 80
-      - 443
-    networks:
-      - default
   andrex:
     build:
       context: .
       dockerfile: Dockerfile.local
     ports:
       - 4003:4000
-    env_file: ./env/dev.env
+    env_file: ./env/prod.env
     networks:
       - default
