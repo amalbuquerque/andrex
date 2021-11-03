@@ -1,5 +1,15 @@
 version: "2.2"
 services:
+  nginx:
+    image: nginx:1.21.3
+    volumes:
+      - /home/deploy/certbot:/home/deploy/certbot
+      - ./nginx/sites-enabled:/etc/nginx/sites-enabled
+    ports:
+      - 80
+      - 443
+    networks:
+      - default
   andrex:
     build:
       context: .
