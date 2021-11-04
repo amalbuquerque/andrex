@@ -7,5 +7,7 @@ services:
     ports:
       - 4003:4000
     env_file: ./env/prod.env
+    environment:
+      - SECRET_KEY_BASE
     networks:
       - default

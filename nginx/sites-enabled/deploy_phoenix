@@ -1,5 +1,5 @@
 upstream deploy_phoenix {
-  server localhost:4003;
+  server 127.0.0.1:4003;
 }
 
 map $http_upgrade $connection_upgrade {
