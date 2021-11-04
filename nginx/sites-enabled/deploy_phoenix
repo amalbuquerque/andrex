@@ -1,3 +1,5 @@
+error_log /var/log/nginx/detailed.log debug;
+
 upstream deploy_phoenix {
   server 127.0.0.1:4003;
 }
