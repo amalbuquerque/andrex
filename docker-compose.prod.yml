@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.local
+    # command: tail -f /dev/null
     ports:
       - 4003:4000
     env_file: ./env/prod.env
