@@ -129,7 +129,7 @@ defmodule Andrex.Blog do
   end
 
   defp posts_dir do
-    {:ok, path} = Utils.content_dir_path("blog")
+    {:ok, path} = Utils.content_full_path("blog")
 
     path
   end

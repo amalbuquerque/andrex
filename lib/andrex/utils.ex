@@ -5,7 +5,7 @@ defmodule Andrex.Utils do
 
   def maybe_found(result), do: {:ok, result}
 
-  def content_dir_path(folder) do
+  def content_full_path(folder) do
     with prefix = content_dir_prefix(),
          full_path = Path.join(prefix, folder),
          true <- File.exists?(full_path) do

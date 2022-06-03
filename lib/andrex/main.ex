@@ -101,7 +101,7 @@ defmodule Andrex.Main do
   end
 
   defp main_pages_dir do
-    {:ok, path} = Utils.content_dir_path("main")
+    {:ok, path} = Utils.content_full_path("main")
 
     path
   end
