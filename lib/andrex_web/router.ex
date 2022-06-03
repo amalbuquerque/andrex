@@ -22,6 +22,8 @@ defmodule AndrexWeb.Router do
     get "/tag/:tag", BlogController, :tag
 
     get "/:article", MainController, :page
+
+    get "/static/*path", StaticContentController, :static_content
   end
 
   # Other scopes may use custom stacks.
