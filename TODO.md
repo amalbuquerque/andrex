@@ -1,3 +1,10 @@
+# MOST TODO
+- Release working on port 4000 as expected, not being able to find any markdown to process though
+- Improve the logging when fetching+processing the markdown
+- Make the paths where the markdown is configurable by env vars
+  * there is the BLOG_CONTENT_ROOT_FOLDER env var already, make sure the release works properly when setting it
+  * make sure the docker-compose.prod.yml works
+
 # TODO
 
 - Validate each markdown input file has required metadata and format (filename `yyyy-mm-dd-title-kebab-case.md`, `Title` and `Description` metadata fields)
