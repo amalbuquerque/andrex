@@ -1,0 +1,14 @@
+version: "2.2"
+services:
+  andrex:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    # command: tail -f /dev/null
+    ports:
+      - 4003:4000
+    env_file: ./env/prod.env
+    environment:
+      - SECRET_KEY_BASE
+    networks:
+      - default

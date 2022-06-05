@@ -7,6 +7,8 @@
 
 # TODO
 
+- Proper deployment using the release, instead of just running the phx.server
+- Bump the Elixir version to 1.13 and Phoenix, and with the Phoenix update I'll have to drop the usage of webpack
 - Validate each markdown input file has required metadata and format (filename `yyyy-mm-dd-title-kebab-case.md`, `Title` and `Description` metadata fields)
 - Provision VPS and automate deployment (dokku?)
 - RSS

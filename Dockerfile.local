@@ -27,7 +27,7 @@ RUN apt-get -q update && apt-get -qy --no-install-recommends install ${run_deps}
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash
 
-RUN apt-get -qy --no-install-recommends install nodejs
+RUN apt-get install -qy nodejs
 
 RUN adduser --disabled-password --gecos '' app && chown -R app:app ${HOME}
 
