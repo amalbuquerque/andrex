@@ -10,10 +10,7 @@ import Config
 # which you should run after static files are built and
 # before starting your production server.
 config :andrex, AndrexWeb.Endpoint,
-  http: [
-    ip: {127, 0, 0, 1},
-    port: 4000
-  ],
+  http: [port: 4000],
   debug_errors: true,
   check_origin: false,
   url: [host: "a14e.eu", port: 443, scheme: "https"],
